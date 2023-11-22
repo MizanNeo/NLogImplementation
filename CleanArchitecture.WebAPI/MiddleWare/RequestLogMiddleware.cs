@@ -39,25 +39,8 @@ namespace CleanArchitecture.WebAPI.MiddleWare
             }
             _logger.LogInformation("Response sent: {StatusCode}", context.Response.StatusCode);
         }
-        private async Task LogExceptionAsync(DataContext dbContext, Exception exception)
-        {
-            var logEntry = new Log
-            {
-                LogLevel = "Error",
-                Timestamp = DateTime.UtcNow,
-                Message = exception.Message,
-                Exception = exception.ToString()
-            };
-            dbContext.Logs.Add(logEntry);
-            await dbContext.SaveChangesAsync();
-        }
-        //NLog COde
         //private async Task LogExceptionAsync(DataContext dbContext, Exception exception)
         //{
-        //    var logger = NLog.LogManager.GetCurrentClassLogger();
-
-        //    logger.Error(exception, "An error occurred.");
-
         //    var logEntry = new Log
         //    {
         //        LogLevel = "Error",
@@ -68,5 +51,22 @@ namespace CleanArchitecture.WebAPI.MiddleWare
         //    dbContext.Logs.Add(logEntry);
         //    await dbContext.SaveChangesAsync();
         //}
+        //NLog COde
+        private async Task LogExceptionAsync(DataContext dbContext, Exception exception)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+
+            logger.Error(exception, "An error occurred.");
+
+            var logEntry = new Log
+            {
+                LogLevel = "Error",
+                Timestamp = DateTime.UtcNow,
+                Message = exception.Message,
+                Exception = exception.ToString()
+            };
+            dbContext.Logs.Add(logEntry);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }
